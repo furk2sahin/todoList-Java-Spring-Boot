@@ -1,10 +1,10 @@
-package com.furkansahin.todoList;
+package com.furkansahin.todolist;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class 1TodoListApplication {
+public class TodoListApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TodoListApplication.class, args);
