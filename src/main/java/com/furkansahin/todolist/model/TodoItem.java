@@ -3,7 +3,7 @@ package com.furkansahin.todolist.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "TodoItems")
+@Table(name = "TodoItem")
 public class TodoItem {
 
     @Id

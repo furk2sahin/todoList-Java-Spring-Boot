@@ -1,13 +1,15 @@
 package com.furkansahin.todolist.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
 @Entity
-@Table(name = "Todos")
+@Table(name = "TodoList")
 public class TodoList {
 
     @Id
@@ -23,7 +25,7 @@ public class TodoList {
     private Date createDate;
 
     @OneToMany(mappedBy = "list")
-    private List<TodoItem> items = new ArrayList<TodoItem>();
+    private List<TodoItem> items = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -39,5 +41,23 @@ public class TodoList {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    @XmlTransient
+    @JsonIgnore
+    public List<TodoItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<TodoItem> items) {
+        this.items = items;
     }
 }
