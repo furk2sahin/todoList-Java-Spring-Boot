@@ -1,6 +1,7 @@
 package com.furkansahin.todolist.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -21,10 +22,11 @@ public class TodoList {
     @Column(name = "list_title")
     private String title;
 
-    @CreatedDate
+    @CreationTimestamp
     private Date createDate;
 
-    @OneToMany(mappedBy = "list")
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = TodoItem.class)
+    @JoinColumn(name = "list_id", referencedColumnName = "id")
     private List<TodoItem> items = new ArrayList<>();
 
     public Long getId() {
@@ -47,12 +49,6 @@ public class TodoList {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    @XmlTransient
-    @JsonIgnore
     public List<TodoItem> getItems() {
         return items;
     }

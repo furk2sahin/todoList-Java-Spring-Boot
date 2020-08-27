@@ -1,7 +1,7 @@
 package com.furkansahin.todolist.service;
 
-import com.furkansahin.todolist.dao.jpa.TodoItemRepository;
-import com.furkansahin.todolist.dao.jpa.TodoListRepository;
+import com.furkansahin.todolist.repository.TodoItemRepository;
+import com.furkansahin.todolist.repository.TodoListRepository;
 import com.furkansahin.todolist.exception.ListNotFoundException;
 import com.furkansahin.todolist.exception.TodoNotFoundException;
 import com.furkansahin.todolist.model.TodoItem;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TodoListServiceImpl implements TodoListService{
@@ -36,7 +35,7 @@ public class TodoListServiceImpl implements TodoListService{
 
     @Override
     public List<TodoList> findListsByNameLike(String keyword) {
-        return todoListRepository.findTodoListByNameLike(keyword);
+        return todoListRepository.findByTitleContaining(keyword);
     }
 
     @Override
@@ -45,53 +44,19 @@ public class TodoListServiceImpl implements TodoListService{
     }
 
     @Override
-    public TodoList getListByTodoId(Long id) throws ListNotFoundException {
-        Optional<TodoItem> item = todoItemRepository.findById(id);
-        if(item.isEmpty()){
-            throw new TodoNotFoundException("Todo not found by id: " + id);
-        } else{
-           return todoListRepository.findById(item.get().getList().getId()).orElseThrow(()->{return new ListNotFoundException("List Not found by id: " + id);});
-        }
-    }
-
-    @Override
-    public List<TodoItem> findTodoItems() {
-        return todoItemRepository.findAll();
-    }
-
-    @Override
-    public TodoItem getTodoItemById(Long id) throws TodoNotFoundException {
-        return todoItemRepository.findById(id).orElseThrow(()->{return new TodoNotFoundException("Todo Item Not found by id: " + id);});
-    }
-
-    @Override
     public void createList(TodoList list) {
         todoListRepository.save(list);
     }
 
     @Override
-    public void updateList(TodoList list) {
-        todoListRepository.updateTodoList(list.getTitle(), list.getId());
+    public void updateList(Long id, String title) {
+        TodoList listToUpdate = todoListRepository.getOne(id);
+        listToUpdate.setTitle(title);
+        todoListRepository.save(listToUpdate);
     }
 
     @Override
     public void deleteList(Long id) {
-        todoItemRepository.deleteTodoItemsByListId(id);
         todoListRepository.deleteById(id);
-    }
-
-    @Override
-    public void createTodo(TodoItem item) {
-        todoItemRepository.save(item);
-    }
-
-    @Override
-    public void updateTodo(TodoItem item) {
-        todoItemRepository.updateTodoItem(item.getItem(), item.getId());
-    }
-
-    @Override
-    public void deleteTodo(Long id) {
-        todoItemRepository.deleteById(id);
     }
 }
