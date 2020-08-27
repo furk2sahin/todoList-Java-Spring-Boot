@@ -1,8 +1,10 @@
-package com.furkansahin.todolist.web;
+package com.furkansahin.todolist.controller;
 
 import com.furkansahin.todolist.exception.ListNotFoundException;
 import com.furkansahin.todolist.model.TodoList;
 import com.furkansahin.todolist.service.TodoListService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 
+@Api(value = "TodoList Controller", description = "API for todo list operations")
 @RestController
 @RequestMapping("/rest")
 public class TodoListRestController {
@@ -18,12 +21,14 @@ public class TodoListRestController {
     @Autowired
     private TodoListService todoListService;
 
+    @ApiOperation(value = "Get all todo lists", notes = "returns all lists")
     @RequestMapping(method = RequestMethod.GET, value = "/todolists")
     public ResponseEntity<List<TodoList>> getLists(){
         List<TodoList> lists = todoListService.findLists();
         return ResponseEntity.ok(lists);
     }
 
+    @ApiOperation(value = "Get todo list by name containing", notes = "returns all lists which it contains given keyword")
     @RequestMapping(method = RequestMethod.GET, value = "/todolists/{title}")
     public ResponseEntity<?> getListsByNameLike(@PathVariable("title") String title){
         List<TodoList> lists = todoListService.findListsByNameLike(title);
@@ -35,6 +40,7 @@ public class TodoListRestController {
 
     }
 
+    @ApiOperation(value = "Get list by id", notes = "returns a list which have the given id")
     @RequestMapping(method = RequestMethod.GET, value = "/todolist/{id}")
     public ResponseEntity<?> getListById(@PathVariable("id") Long id){
         TodoList list = null;
@@ -48,6 +54,7 @@ public class TodoListRestController {
         return ResponseEntity.ok(list);
     }
 
+    @ApiOperation(value = "Create a list", notes = "Creates a list and returns it")
     @RequestMapping(method = RequestMethod.POST, value = "/todolist")
     public ResponseEntity<TodoList> createList(@RequestBody TodoList list){
         try{
@@ -60,6 +67,7 @@ public class TodoListRestController {
         }
     }
 
+    @ApiOperation(value = "Update a list", notes = "Updates a list and rename it given title")
     @RequestMapping(method = RequestMethod.PUT, value = "/todolist/{id}")
     public ResponseEntity<?> updateList(@PathVariable("id") Long id, @RequestBody TodoList todoListRequest){
         try {
@@ -74,6 +82,7 @@ public class TodoListRestController {
         }
     }
 
+    @ApiOperation(value = "Delete a list", notes = "Deletes a list by given id")
     @RequestMapping(method = RequestMethod.DELETE, value = "/todolist/{id}")
     public ResponseEntity<?> deleteList(@PathVariable("id") Long id){
         try{

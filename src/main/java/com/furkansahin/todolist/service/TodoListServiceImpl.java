@@ -3,8 +3,6 @@ package com.furkansahin.todolist.service;
 import com.furkansahin.todolist.repository.TodoItemRepository;
 import com.furkansahin.todolist.repository.TodoListRepository;
 import com.furkansahin.todolist.exception.ListNotFoundException;
-import com.furkansahin.todolist.exception.TodoNotFoundException;
-import com.furkansahin.todolist.model.TodoItem;
 import com.furkansahin.todolist.model.TodoList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
