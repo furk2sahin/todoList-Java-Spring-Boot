@@ -1,2 +1,2 @@
 # todoList
-TodoList project with Spring Boot
+TodoList project with Java Spring Boot
